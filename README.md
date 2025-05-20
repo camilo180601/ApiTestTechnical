@@ -1,61 +1,199 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📘 API de Gestión de Inventario con Roles
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 🚀 Descripción del Proyecto
 
-## About Laravel
+Este proyecto es una **API RESTful construida con Laravel 10** que permite gestionar un inventario básico de productos y categorías, con control de acceso por roles (`admin` | `user`). Incluye autenticación basada en tokens, validación robusta, y está lista para ser desplegada públicamente.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🧱 Stack Tecnológico
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **PHP**: 8.3.x
+- **Laravel**: 12.x
+- **Base de datos**: MySQL 8.x
+- **ORM**: Eloquent
+- **Autenticación**: Laravel Sanctum
+- **Despliegue**: Vercel + conexión remota a MySQL
+- **Documentación API**: Postman Collection
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Instrucciones para Configurar Localmente
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. Clona el repositorio:
+```bash
+git clone https://github.com/camilo180601/ApiTestTechnical
+cd ApiTestTechnical
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Instala las dependencias:
+```bash
+composer install
+```
 
-## Laravel Sponsors
+3. Copia el archivo `.env`:
+```bash
+cp .env.example .env
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4. Genera la key de la aplicación:
+```bash
+php artisan key:generate
+```
 
-### Premium Partners
+5. Configura la base de datos MySQL en `.env`:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=apitesttechnical
+DB_USERNAME=root
+DB_PASSWORD=tu_contraseña
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+6. Ejecuta las migraciones y seeders:
+```bash
+php artisan migrate --seed
+```
 
-## Contributing
+7. Inicia el servidor de desarrollo:
+```bash
+php artisan serve
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 📦 Endpoints Disponibles
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 🔐 Autenticación y Usuarios
 
-## Security Vulnerabilities
+| Método | Endpoint         | Rol Requerido | Descripción                          |
+|--------|------------------|---------------|--------------------------------------|
+| POST   | /api/register    | Público/Admin | Registra usuario (Admin puede definir rol) |
+| POST   | /api/login       | Público       | Inicia sesión y devuelve token       |
+| POST   | /api/logout      | Autenticado   | Cierra sesión del usuario actual     |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 📦 Productos
 
-## License
+| Método | Endpoint            | Rol         | Descripción                     |
+|--------|---------------------|-------------|---------------------------------|
+| GET    | /api/products       | Todos       | Lista productos                 |
+| GET    | /api/products/{id}  | Todos       | Detalle de producto             |
+| POST   | /api/products       | Solo admin  | Crea producto                   |
+| PUT    | /api/products/{id}  | Solo admin  | Actualiza producto              |
+| DELETE | /api/products/{id}  | Solo admin  | Elimina producto                |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 📁 Categorías
+
+| Método | Endpoint             | Rol         | Descripción                     |
+|--------|----------------------|-------------|---------------------------------|
+| GET    | /api/categories      | Todos       | Lista categorías                |
+| POST   | /api/categories      | Solo admin  | Crea categoría                  |
+| PUT    | /api/categories/{id} | Solo admin  | Actualiza categoría             |
+| DELETE | /api/categories/{id} | Solo admin  | Elimina categoría               |
+
+---
+
+## ✅ Seguridad y Roles
+
+- Roles definidos como `enum('admin','user')` en la tabla `users`.
+- Autenticación con **Laravel Sanctum** mediante token.
+- Middleware personalizado `IsAdmin` para protección de endpoints sensibles.
+- Gestión clara de errores y respuestas JSON estandarizadas.
+
+---
+
+## 📄 Validación y Manejo de Errores
+
+Cada endpoint tiene validaciones específicas. Si una solicitud no pasa la validación, la respuesta será:
+
+```json
+{
+  "message": "El campo nombre es obligatorio",
+  "errors": {
+    "name": ["El campo nombre es obligatorio"]
+  }
+}
+```
+
+---
+
+## 📂 Estructura del Proyecto
+
+- `app/Http/Controllers`: Controladores API
+- `app/Http/Middleware/IsAdmin.php`: Middleware de rol
+- `routes/api.php`: Endpoints RESTful
+- `routes/web.php`: Soporte para Blade (separado de la lógica de la API)
+- `app/Models`: Eloquent Models
+
+---
+
+## 🧠 Decisiones de Diseño
+
+| Elemento                    | Elección / Justificación                                            |
+|----------------------------|----------------------------------------------------------------------|
+| Roles como enum            | Suficiente para dos roles fijos, sin necesidad de tabla extra       |
+| Middleware personalizado   | `IsAdmin` separa claramente la lógica de autorización               |
+| Reutilización de controladores | Los controladores están diseñados para servir exclusivamente a la API RESTful, sin lógica compartida con vistas Blade |
+| Base de datos MySQL        | Compatibilidad con despliegue y gestión relacional completa         |
+| Despliegue en Vercel       | Fácil, rápido, y se configuró `.vercel.json` para enrutar bien las APIs |
+
+---
+
+## 🌍 URL Pública de Despliegue
+
+🟢 [https://apitesttechnical.vercel.app](https://apitesttechnical.vercel.app)
+
+---
+
+## 🧪 Pruebas API (Postman)
+
+📥 Archivo: `api-collection.postman.json`
+
+### Instrucciones:
+1. Importa el archivo en Postman.
+2. Usa el endpoint `/api/login` para obtener tu token.
+3. Agrega el token en **Authorization > Bearer Token**.
+4. Ejecuta los demás endpoints autenticados.
+
+---
+
+## ⚙️ Variables de Entorno a configurar
+
+```env
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=base64:...
+APP_DEBUG=true
+APP_URL=https://apitesttechnical.vercel.app
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=apitesttechnical
+DB_USERNAME=root
+DB_PASSWORD=********
+
+```
+
+---
+
+## ☁️ Despliegue en Vercel
+- El archivo `.vercelignore` se incluye para omitir a la hora de hacer el despliegue
+- El archivo `vercel.json` se incluye para redirigir correctamente las rutas API:
+
+```bash
+vercel .
+vercel --prod
+```
+
+```json
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/index.php" }
+  ]
+}
+```
+
+- Base de datos MySQL conectada a través de variables de entorno.
+- Asegúrate de que el servidor MySQL sea accesible públicamente o desde Vercel (host remotos o Railway, PlanetScale, etc).
